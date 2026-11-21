@@ -27,6 +27,10 @@ jobs:
           mkdir -p _site
           for f in siraj360-part*.zip; do unzip -o -q "$f" -d _site; done
           touch _site/.nojekyll
+          mkdir -p _site/teacher-voices
+          cp teacher-voices/*.json _site/teacher-voices/ 2>/dev/null || true
+          python3 -c "import json,glob,os; os.chdir('_site/teacher-voices'); json.dump(sorted(f for f in glob.glob('*.json') if f!='manifest.json'), open('manifest.json','w'), ensure_ascii=False)"
+          cat _site/teacher-voices/manifest.json
           ls _site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
